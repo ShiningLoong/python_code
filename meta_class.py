@@ -64,6 +64,7 @@ class ModelMetaclass(type):
             return type.__new__(cls, name, bases, attrs)
         print("Found Model:%s" % name)
         mappings = dict()
+        print(attrs.items())
         for k, v in attrs.items():
             if isinstance(v, Field):
                 print("Found mapping:%s->%s" % (k, v))
@@ -113,8 +114,8 @@ u = User(id=12345, name='Michael', email='test@orm.org', password='my-pwd')
 # u = User()
 u.save()
 
-m = Model(id=12345, name='Michael', email='test@orm.org', password='my-pwd')
-m.save()
+# m = Model(id=12345, name='Michael', email='test@orm.org', password='my-pwd')
+# m.save()
 print('_____________________________分割线_______________________')
 
 # test how dict initializing
@@ -129,9 +130,10 @@ print(type(mydict.para1))  # still don't know how key-values are stored in a dic
 print(type(mydict.para2))
 print(mydict.keys())
 print(mydict.values())
+print("%s" % mydict.para1)
 
-mydict2 = MyDict()
-print(mydict2)
-print(dir(mydict))
+# mydict2 = MyDict()
+# print(mydict2)
+# print(dir(mydict))
 
 # Summary:
