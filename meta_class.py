@@ -23,16 +23,14 @@ print('_____________________________分割线_______________________')
 # write a meta class and use it
 
 class ListMetaclass(type):  # object是type的 instance , object 也是type 的 父类
-    def __new__(mcs, name, bases, attrs):
-        # __new__供系统调用用于创建一个class,class本身也是一个instance
-        # mcs 参数可以理解为指向要创建的instance的指针（暂时这么认为），这个instance就是我们要创建的class
+    def __new__(mcs, name, bases, attrs):  # When creating an instance, __new__ would be called
         attrs["add"] = lambda self, value: self.append(value)
         return type.__new__(mcs, name, bases, attrs)
 
 
 class MyList(list, metaclass=ListMetaclass):
     def __init__(self, **kw):
-        super(MyList, self).__init__(**kw) # 用.下标执行__init__函数时实际上已经传递了第一个参数self
+        super(MyList, self).__init__(**kw)  # 用.下标执行__init__函数时实际上已经传递了第一个参数self
 
 
 mylist = MyList()
@@ -53,18 +51,27 @@ class Field:
 class StringField(Field):
     def __init__(self, name):
         super(StringField, self).__init__(name, "varchar[100]")
+# If a base class has an __init__() method, the derived class’s __init__() method
+# (if any)must explicitly call it to ensure proper initialization of the base class part of the instance;
 
 class IntField(Field):
     def __init__(self, name):
-        super(IntField, self).__init__(name, "bigint")
+        # super(IntField, self).__init__(name, "bigint")
+        # the use of super() has changed in Python 3.0
+        super().__init__(name, "bigint")
 
 class ModelMetaclass(type):
     def __new__(cls, name, bases, attrs):
-        if name == "Model":
+        if name == "Model":  # this metaclass only works for Model's subclass
             return type.__new__(cls, name, bases, attrs)
         print("Found Model:%s" % name)
         mappings = dict()
-        print(attrs.items())
+        print('args of __new__ look like this:')
+        print(cls)
+        print(name)
+        print(bases)
+        print(attrs)
+        # print(attrs.items())
         for k, v in attrs.items():
             if isinstance(v, Field):
                 print("Found mapping:%s->%s" % (k, v))
@@ -136,4 +143,31 @@ print("%s" % mydict.para1)
 # print(mydict2)
 # print(dir(mydict))
 
-# Summary:
+print('_____________________________分割线_______________________')
+
+# the difference between classes and instances
+print(type(list))
+print(type([]))
+print(type(MyDict))
+print(type(Model))
+print(type(User))
+print(type(u))
+# output:
+# <class 'type'>
+# <class 'list'>
+# <class 'type'>  # MyDict is a subclass of builtin class dict
+# <class '__main__.ModelMetaclass'>
+# <class '__main__.ModelMetaclass'>
+# <class '__main__.User'>
+
+
+print('_____________________________分割线_______________________')
+
+# try to create a new instance by calling  __new__
+
+class TestCls:
+    pass
+
+
+# inst = type.__new__(TestCls)
+# print(type(inst))
