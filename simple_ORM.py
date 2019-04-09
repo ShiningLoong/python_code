@@ -5,7 +5,9 @@
 # 1.basic data structure of object to describe a database
 class Field(dict):
     def __init__(self, name, column_type):
-        self.name = nanme
+        super.__init__()
+        self.name = name
+        self.name = self.name
         self.column_type = column_type
 
 # 2.different kind of content type based on Field
