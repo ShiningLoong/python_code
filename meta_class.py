@@ -17,7 +17,7 @@ a2 = Hello2()
 print(type(a2))  # <class '__main__.hello2'>
 
 
-print('_____________________________分割线_______________________')
+print('_____________________________分割线1_______________________')
 # class is an instance of metaclass
 
 # write a meta class and use it
@@ -36,7 +36,7 @@ class MyList(list, metaclass=ListMetaclass):
 mylist = MyList()
 mylist.add(123)
 
-print('_____________________________分割线_______________________')
+print('_____________________________分割线2_______________________')
 
 # write a object relational mapping (ORM) Framework
 
@@ -123,7 +123,7 @@ u.save()
 
 # m = Model(id=12345, name='Michael', email='test@orm.org', password='my-pwd')
 # m.save()
-print('_____________________________分割线_______________________')
+print('_____________________________分割线3_______________________')
 
 # test how dict initializing
 class MyDict(dict):
@@ -143,14 +143,17 @@ print("%s" % mydict.para1)
 # print(mydict2)
 # print(dir(mydict))
 
-print('_____________________________分割线_______________________')
-
-# the difference between classes and instances
-print(type(list))
-print(type([]))
-print(type(MyDict))
+print('_____________________________分割线4_______________________')
+# 对于一般的class , 用type打印查看结果均为 <class 'type'>
+# 对于包含metaclass 的class ,用type查看结果为 <class '__main__.NameOfMetaclass'>,但是
+# 它的instance 却是 <class '__main__.ClassName'>
+# print(type(list))
+# print(type([]))
+# print(type(MyDict))
 print(type(Model))
+print(type(Model()))
 print(type(User))
+print(type(User()))
 print(type(u))
 # output:
 # <class 'type'>
@@ -159,15 +162,46 @@ print(type(u))
 # <class '__main__.ModelMetaclass'>
 # <class '__main__.ModelMetaclass'>
 # <class '__main__.User'>
+print(list)
+print([])
+print(MyDict)
+print(Model)
+print(User)
+print(u)
 
+print('_____________________________分割线5_______________________')
+# try to figure out differences between class's type and subclass's type
+class BaseClass(object):
+    pass
 
-print('_____________________________分割线_______________________')
+class ClassA(BaseClass):
+    pass
 
-# try to create a new instance by calling  __new__
-
-class TestCls:
+class ClassAA(BaseClass):
     pass
 
 
+print(type(object))
+print(type(BaseClass))
+print(type(BaseClass()))
+print(type(ClassA))
+print(type(ClassA()))
+print(type(ClassAA))
+print(type(ClassAA()))
+
+
+print('_____________________________分割线6_______________________')
+
+# try to create a new instance by calling  __new__
+# __new__ 是python interpreter调用的函数，尝试手动调用
+class TestCls:
+    pass
+# we will rewrite __new__ Only when trying to create a meta class
+# even in metaclass, we don't rewrite all of the __new__ , only change some args that would pass to it
+
+
+print(TestCls)  # <class 'type'>
 # inst = type.__new__(TestCls)
 # print(type(inst))
+# # TypeError: type.__new__(TestCls): TestCls is not a subtype of type
+
