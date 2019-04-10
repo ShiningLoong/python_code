@@ -76,6 +76,7 @@ class ModelMetaclass(type):
             if isinstance(v, Field):
                 print("Found mapping:%s->%s" % (k, v))
                 mappings[k] = v
+                # attrs.pop(k) #  RuntimeError: dictionary changed size during iteration
         for k in mappings.keys():
             attrs.pop(k)
         attrs["__mappings__"] = mappings
