@@ -92,7 +92,6 @@ print(type(u))
 # 2. 对于不含metaclass 的 class,用type查看均为 <class 'type'>
 # 3. 当一个class 定义时包含了metaclass, 这个class就相当于metaclass的instance, 定义过程中会调用到metaclass的__new__方法
 
-
 print('_________________________________________________')
 
 # test __new__ without metaclass
