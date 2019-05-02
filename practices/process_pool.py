@@ -1,20 +1,48 @@
-import os
-import time
-import random
-from multiprocessing import Pool
+class ModelMetaClass(type):
+    def __new__(cls, name, base, attrs):
+        mapping = dict()
+        attrs["__table__"] = name
+        for k, v in attrs.items():
+            if isinstance(v, Field):
+                mapping[k] = v
+        for
+        return type.__new__(cls, name, base, attrs)
 
 
-def f(name):
-    start_time = time.time()
-    print("process %s is running,pid is %s" % (name, os.getpid()))
-    time.sleep(random.random()*3)
-    end_time = time.time()
-    print("process %s ran in %s " % (name, (end_time-start_time)))
+class Field:
+    def __init__(self, column_name, column_type):
+        self.name = column_name
+        self.type = column_type
 
 
-if __name__ == "__main__":
-    p = Pool(5)
-    for i in range(5):
-        p.apply_async(f, args=(i,))
-    p.close()
-    p.join()
+class IntField(Field):
+    def __init__(self, name):
+        super().__init__(name, "BigInt")
+
+
+class StrField(Field):
+    def __init__(self, name):
+        super().__init__(name, "varchar100")
+
+
+class Model(dict, metaclass=ModelMetaClass):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def __getattr__(self, item):
+        try:
+            return self[item]
+        except KeyError:
+            raise AttributeError("attribute %s does not exist" % item)
+
+
+class StudentModel(Model):
+    name = StrField("name")
+    age = IntField("age")
+    gender = StrField("gender")
+
+
+
+
+
+
