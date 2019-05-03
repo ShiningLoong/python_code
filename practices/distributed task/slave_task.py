@@ -17,7 +17,6 @@ result = slave.get_result()
 for i in range(10):
     t = task.get(timeout=10)
     result.put(t**2)
-    print("put %d into result" % t**2)
-slave.shutdown()
+    print("put %f into result" % t**2)
 
 
