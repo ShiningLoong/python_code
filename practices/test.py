@@ -1,9 +1,10 @@
-string = 'aksjakfnalfnBDVSG是多少kjlaf'
-dic = dict()
-for ch in string:
-    if ch not in dic.keys():
-        dic[ch] = 1
-    else:
-        dic[ch] += 1
+def func():
+    lst = list()
+    for x in range(3):
+        def f():
+            return x
+        lst.append(f)
+    return lst
 
-print(dic)
+f = func()
+print(f[1].__closure__)
