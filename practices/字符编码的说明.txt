@@ -1,0 +1,12 @@
+在python3 IDLE中：
+>>> print('\xc2\xbb')
+Â»
+>>> print(b'\xc2\xbb')
+b'\xc2\xbb'
+>>> print(b'\xc2\xbb'.decode('utf8'))
+
+在cmd或pycharm中执行print('\xc2\xbb')或print(b'\xc2\xbb'.decode('utf8'))会报错：
+>>> print('\xc2\xbb')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+UnicodeEncodeError: 'gbk' codec can't encode character '\xc2' in position 0: illegal multibyte sequence
