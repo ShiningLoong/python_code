@@ -16,12 +16,15 @@ while True:
         break
 s.close()
 response = b''.join(buff)
-print(response)
-string = response.decode("utf8")
-# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8')  #跟操作系统相关，一般不建议更改
-# print(string)
-with open("bbb.text", "w", encoding='utf-8') as r:
-    r.write(string)
+with open('tcp.txt', 'wb') as f:
+    f.write(response)
+# print(response)
+with open('tcp.txt', 'rb') as f:
+    string = f.read().decode('utf8')
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='gb18030')  #跟操作系统相关，一般不建议更改
+print(string)
+# with open("bbb.text", "w", encoding='utf-8') as r:
+#     r.write(string)
 # for i,v in enumerate(string):
 #     try:
 #         print(v)
