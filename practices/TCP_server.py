@@ -1,34 +1,23 @@
 import socket
 import threading
-import time
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(('127.0.0.1', 1999))
-s.listen(10)
-print('start listening')
 
-def server_proc(sock, address):
-    print('connection from %s:%s' % address)
-    sock.send(b'Hello, who are you?')
+
+def target_func(sock, addr):
+    sock.send('who are you?'.encode('utf8'))
     while True:
-        d = sock.recv(1024)
-        time.sleep(0.1)
-        if not d or d.decode('utf8') == 'exit':
+        name = sock.recv(1024)
+        if data and data != 'exit'.encode('utf8'):
+            sock.send('Hello, %s' % name.encode('utf8'))
+        else:
             break
-        print(('%s:%s  %s') % (address[0], address[1],d.decode('utf8')))
-        sock.send(('hello,%s!' % d.decode('utf8')).encode('utf8'))
-    sock.close()
-    print('connection closed by client.')
+            sock.close()
 
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind(('127.0.0.1', 8888))
+s.listen(backlog=10)
 while True:
-    sock, address = s.accept()
-    t = threading.Thread(target=server_proc, args=(sock,address))
+    sct, ads = s.accept()
+    t = threading.Thread(target=target_func, args=(sct, ads))
     t.start()
-
-
-
-
-
-
-
-
 
