@@ -116,24 +116,38 @@ int DeleteLinkNode(LinkNode *L, ELE_TYPE &e, int i)
     return 0;
 }
 
+int SortLinkList_select(LinkNode *L) //选择排序
+{
+    LinkNode *start = L->next;
+    LinkNode *p = start; 
+    LinkNode *tmp_p = p;
+    ELE_TYPE tmp;
+    while(start != NULL)
+    {
+        while(p != NULL)
+        {
+            if(tmp_p->data < p->data)
+                tmp_p = p;
+            p = p->next;
+        }
+        tmp = tmp_p->data;
+        tmp_p->data = start->data;
+        start->data = tmp;
+        start = start->next;
+        p = start;
+        tmp_p = start;
+    }
+    return 0;
+}
+
+
 int main()
 {
-    ELE_TYPE a[] = {1,3,4,65,66,88,133,-2};
+    ELE_TYPE a[] = {1,3,4,65,66,88,133,-2,-99,-123,897};
     LinkNode* L;
     InitLinkList(L,a, sizeof(a)/sizeof(a[0]));
     PrintLinkList(L);
-    // printf("%d", L->next->data);
-    // DestroyLinkList(L);
-    // PrintLinkList(L);
-    int i ;
-    ELE_TYPE e;
-    scanf("%d", &i);
-    // ELE_TYPE e;
-    // if(GetNodeByIndex(L, i, e))
-        // printf("%d", e);
-    // printf("%d", GetNodeByValue(L, i));
-    // printf("%d\n", InsertLinkLisk(L,i,e));
-    printf("%d\n", DeleteLinkNode(L,e,i));
+    SortLinkList_select(L);
     PrintLinkList(L);
     return 0;
 }
