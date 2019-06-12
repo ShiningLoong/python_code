@@ -140,6 +140,21 @@ int SortLinkList_select(LinkNode *L) //选择排序
     return 0;
 }
 
+int ReverseLinkList(LinkNode *L)
+{
+    LinkNode *p = L->next, *q;
+    L->next = NULL;
+    while(p != NULL)
+    {
+        q = p->next;
+        p->next = L->next;
+        L->next = p;
+        p = q;
+    }
+    return 0 ;
+}
+
+
 
 int main()
 {
@@ -147,7 +162,7 @@ int main()
     LinkNode* L;
     InitLinkList(L,a, sizeof(a)/sizeof(a[0]));
     PrintLinkList(L);
-    SortLinkList_select(L);
+    ReverseLinkList(L);
     PrintLinkList(L);
     return 0;
 }
