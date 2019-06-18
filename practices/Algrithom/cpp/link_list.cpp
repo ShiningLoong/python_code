@@ -155,6 +155,52 @@ int ReverseLinkList(LinkNode *L)
 }
 
 
+int SplitLinkList(LinkNode *L, LinkNode *&L1)
+{
+    L1 = (LinkNode *)malloc(sizeof(LinkNode));
+    LinkNode *p = L->next,*q;
+    L->next = NULL;
+    L1->next = NULL;
+    LinkNode *tail = L; //point to tail of L1
+    while(p!=NULL)
+    {
+        q = p->next;
+        p->next = tail->next;
+        tail->next = p;
+        tail = p;
+        
+        if(q != NULL)
+        {
+            p = q->next;
+            q->next = L1->next;
+            L1->next = q;
+            q = p->next;
+        }
+        else
+            p = q;            
+    }
+    return 0;
+}
+
+// int Split(LinkNode *&L, LinkNode *&L1, LinkNode *&L2)  //课件中的代码步骤有误
+// {
+    // LinkNode *p=L->next,*q,*r1;
+    // L1=L;			//L1利用原来L的头结点
+    // r1=L1;			//r1始终指向L1的尾结点
+    // L2=(LinkNode *)malloc(sizeof(LinkNode));    //创建L2的头结点
+    // L2->next=NULL;		//置L2的指针域为NULL     
+    // while (p!=NULL)
+      // {	r1->next=p;		//采用尾插法将*p(data值为ai)插入L1中
+        // r1=p;
+        // p=p->next;		//p移向下一个结点(data值为bi)
+        // q=p->next;     		//用q保存*p的后继结点
+        // p->next=L2->next;	//采用头插法将*p插入L2中
+        // L2->next=p;
+        // p=q;			//p重新指向ai+1的结点
+      // }
+    // r1->next=NULL;		//尾结点next置空
+    // return 0;
+// }
 
 int main()
 {
@@ -162,8 +208,14 @@ int main()
     LinkNode* L;
     InitLinkList(L,a, sizeof(a)/sizeof(a[0]));
     PrintLinkList(L);
-    ReverseLinkList(L);
+    LinkNode * L1;
+    SplitLinkList(L,L1);
     PrintLinkList(L);
+    PrintLinkList(L1);
+    // LinkNode *L2;
+    // Split(L,L1,L2);
+    // PrintLinkList(L1);
+    // PrintLinkList(L2);
     return 0;
 }
 
