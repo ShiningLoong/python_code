@@ -94,18 +94,55 @@ int solve_linear(LinearList* L)
     return 0;
 }
 
+int solve_link(LinkNode *L)
+{
+    LinkNode *L1 = (LinkNode *)malloc(sizeof(LinkNode));
+    L1->next = NULL;
+    LinkNode *p = L->next; 
+    LinkNode *p_pre = L;
+    while(p != NULL)
+    {
+        if(p->data == 0)
+        {
+            p_pre->next = p->next;
+            p->next = L->next;
+            L->next = p;
+            p = p_pre->next;
+            
+        }
+        else if(p->data == 2)
+        {
+            p_pre->next = p->next;
+            p->next = L1->next;
+            L1->next = p;
+            p = p_pre->next;           
+        }
+        else
+        {
+            p_pre = p;            
+            p = p->next;    
+        }    
+    }
+    p_pre->next = L1->next;
+    free(L1);
+    return 0;
+}
+
+
 int main()
 {
-    ELE_TYPE list[] = {1,2,0,0,0,2,2,1,2,2,0,0,0,2,1,2,1,2,1,1,2,2,0};
+    ELE_TYPE list[] = {1,2,0};
     int length = sizeof(list)/sizeof(list[0]);  
     LinearList *L1 = (LinearList*)malloc(sizeof(LinearList));
     LinkNode *L2;
     InitLinearList(L1,list,length);
     InitLinkList(L2,list,length);
-    PrintLinearList(L1);
+    // PrintLinearList(L1);
     PrintLinkList(L2);
-    solve_linear(L1);
-    PrintLinearList(L1);
+    // solve_linear(L1);
+    // PrintLinearList(L1);
+    solve_link(L2);
+    PrintLinkList(L2);
     
     return 0;
 }
