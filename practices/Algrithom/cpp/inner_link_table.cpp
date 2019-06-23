@@ -66,11 +66,11 @@ int InnerLink(HNode *&L1, HNode *&L2, HNode *&L)
     L->next = NULL;
     LNode *p,*r;
     LNode *p1=L1->next,*p2=L2->next;
-    for(int i=0;i<L1->line;i++)
+    while(p1 != NULL)
     {
-        for(int j=0;j<L2->line;j++)
+        while(p2 != NULL)
         {
-            if(p1->data[key_t1]==p2->data[key_t2])
+            if(p1->data[key_t1-1]==p2->data[key_t2-1])
                 //link the 2 lines
                 {
                     p = (LNode*)malloc(sizeof(LNode));
@@ -83,9 +83,11 @@ int InnerLink(HNode *&L1, HNode *&L2, HNode *&L)
                     else
                         r->next = p;
                     r = p;
+					L->line++;
                 }
                 p2 = p2->next;
         }
+		p2 = L2->next;
         p1 = p1->next;
     }
     r->next = NULL;
@@ -100,6 +102,8 @@ int main()
     HNode *L2 = (HNode *)malloc(sizeof(HNode));
     CreateTable(L1);
     CreateTable(L2);
+	PrintTable(L1);
+	PrintTable(L2);
     InnerLink(L1,L2,L);
     PrintTable(L);
     return 0;
