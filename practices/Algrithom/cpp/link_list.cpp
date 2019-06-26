@@ -202,20 +202,42 @@ int SplitLinkList(LinkNode *L, LinkNode *&L1)
     // return 0;
 // }
 
+int GetIntersection(LinkNode *L1,LinkNode *L2, LinkNode *L3) //L1 and L2 both are sorted list.
+{
+    LinkNode *p1=L1->next, *p2=L2->next, *p3;
+    LinkNode *r = L3;
+    while(p1!=NULL && p2!=NULL)
+    {
+        if(p1->data < p2->data)
+            p1 = p1->next;
+        else if(p1->data > p2->data)
+            p2 = p2->next;
+        else
+        {
+            p3 = (LinkNode *)malloc(sizeof(LinkNode));
+            p3->data = p1->data;
+            r->next = p3;
+            r = r->next;
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+    }
+    r->next = NULL;
+    return 0;
+}
+
 int main()
 {
-    ELE_TYPE a[] = {1,3,4,65,66,88,133,-2,-99,-123,897};
-    LinkNode* L;
-    InitLinkList(L,a, sizeof(a)/sizeof(a[0]));
-    PrintLinkList(L);
-    LinkNode * L1;
-    SplitLinkList(L,L1);
-    PrintLinkList(L);
+    ELE_TYPE a[] = {1,3,3,6,8,888,999,};
+    ELE_TYPE b[] = {1,1,3,3,5,7,8,78,788,888,999};
+    LinkNode *L1, *L2, *L3;
+    InitLinkList(L1,a, sizeof(a)/sizeof(a[0]));
+    InitLinkList(L2,b, sizeof(b)/sizeof(b[0]));
+    InitLinkList(L3,NULL,0);
     PrintLinkList(L1);
-    // LinkNode *L2;
-    // Split(L,L1,L2);
-    // PrintLinkList(L1);
-    // PrintLinkList(L2);
+    PrintLinkList(L2);
+    GetIntersection(L1,L2,L3);
+    PrintLinkList(L3);
     return 0;
 }
 
