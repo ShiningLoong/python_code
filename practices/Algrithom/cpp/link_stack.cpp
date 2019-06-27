@@ -113,6 +113,7 @@ int EasyArithmetic(int x, int y,char c)
 int Calculate(char *s) //calculate the value of a expression only contains +-*/
 {
     char post_exp[100] = {'\0'};
+	// printf("%d",post_exp[90]);
     int i=0,j=0,result=0;
     // ------------------------------Transform middian exp to post exp--------------------------------------------
     for(;s[i]!='\0';i++)
@@ -144,17 +145,34 @@ int Calculate(char *s) //calculate the value of a expression only contains +-*/
     }
     while(!IsEmptyStack(L))
         {post_exp[j]=PopStack(L);j++;}
-    printf("%s", post_exp);
+    printf("%s\n", post_exp);
     
     // ------------------------------calculate post expression--------------------------------------------
-    for(int k=0;post_exp[k]!='\0';k++)
-    {
-        while(IsNum(post_exp[k]))
-            PushStack(L,post_exp[k]);
-        
-    }
-    
-    return 0;
+	int k=0;
+	StackNode *L1;
+	InitStack(L1);
+	int position,num;
+	int x,y;
+	while(post_exp[k]!='\0')
+	{
+		for(;IsNum(post_exp[k]);k++)
+			PushStack(L1,post_exp[k]);
+		position = 1,num=0;
+		while(!IsEmptyStack(L1))
+			{num+=PopStack(L1)* position; position=position*10;}
+		// printf("%d\n",post_exp[k]);
+		PushStack(L,num);
+        if(post_exp[k]=='#')
+			k++;
+		else
+			{
+				y = PopStack(L);
+				x = PopStack(L);
+				result = EasyArithmetic(x,y,post_exp[k]);
+				PushStack(L,result);
+			}				
+	}
+    return result;
 }
 
 int main()
@@ -163,6 +181,7 @@ int main()
     char s[50];
     std::cin>>s; 
     // printf("s is: %s", s);
-    Calculate(s);
+    int r=Calculate(s);
+	printf("%d\n",r);
     return 0;
 }
