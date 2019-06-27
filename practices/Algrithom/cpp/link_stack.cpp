@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 #define MAX_STACK_SIZE 256
-#define ELE_TYPE int
+#define ELE_TYPE char
 
 typedef struct LNode{
     ELE_TYPE data;
@@ -69,18 +70,99 @@ bool IsBracketMatch(char *s)
         return false;
 }
 
-int Calculate(*s) //calculate the value of a expression only contains +-*/
+bool IsInString(char c, char *s)
 {
+    for(int i=0;s[i]!='\0';i++)
+        if(c == s[i])
+            return true;
+    return false;
+}
+
+int GetPrior(char c)
+{
+    char *s1 = "+-";
+    char *s2 = "*/";
+    if(IsInString(c,s1))
+        return 1;
+    else if(IsInString(c,s2))
+        return 2;
+    else if(c == '(')
+        return 0;
+}
+
+bool IsNum(char c)
+{
+    char *s = "0123456789";
+    if(IsInString(c,s))
+        return true;
+    return false;
+}
+
+int EasyArithmetic(int x, int y,char c)
+{
+    switch(c)
+    {
+        case '+' : return x+y;
+        case '-' : return x-y;
+        case '*' : return x*y;
+        case '/' : return x/y;
+    }
+}
+
+
+int Calculate(char *s) //calculate the value of a expression only contains +-*/
+{
+    char post_exp[100] = {'\0'};
+    int i=0,j=0,result=0;
+    // ------------------------------Transform middian exp to post exp--------------------------------------------
+    for(;s[i]!='\0';i++)
+    {
+        if(IsNum(s[i]))
+            {post_exp[j]=s[i];j++;} //if is a num, append it to post_exp
+        else
+        {
+            if(i!=0 and IsNum(s[i-1])) //don't take account expressions starting with "+-*/" , that's illegal
+                {post_exp[j]='#';j++;}  //add a # to the end of a num
+            if(s[i]=='(') //if it is '(', push it to stack
+                PushStack(L,s[i]);
+            else if(s[i]==')') //when it is ')', pop all operator until '('
+                {
+                    while(GetStackTop(L)!='(')
+                        {post_exp[j]=PopStack(L);j++;}
+                    PopStack(L);
+                }
+            else if(IsEmptyStack(L) or GetPrior(s[i])>GetPrior(GetStackTop(L)))
+                PushStack(L,s[i]);
+            else
+                {
+                    while(!IsEmptyStack(L) and GetStackTop(L)!='(' and GetPrior(s[i])<=GetPrior(GetStackTop(L)))
+                        // pop all operators until it is '(' or the stack is empty or the top is not less prior
+                        {post_exp[j]=PopStack(L);j++;}
+                    PushStack(L,s[i]);
+                }         
+        }
+    }
+    while(!IsEmptyStack(L))
+        {post_exp[j]=PopStack(L);j++;}
+    printf("%s", post_exp);
     
+    // ------------------------------calculate post expression--------------------------------------------
+    for(int k=0;post_exp[k]!='\0';k++)
+    {
+        while(IsNum(post_exp[k]))
+            PushStack(L,post_exp[k]);
+        
+    }
+    
+    return 0;
 }
 
 int main()
 {
     InitStack(L);
-    char *s = "ask(akjsnsav)(kjbskjvd)kn((knjdv)anv)mkkm()a(sv";
-    if(IsBracketMatch(s))
-        printf("OK");
-    else
-        printf("Not match");
+    char s[50];
+    std::cin>>s; 
+    // printf("s is: %s", s);
+    Calculate(s);
     return 0;
 }
