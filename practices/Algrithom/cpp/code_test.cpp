@@ -3,7 +3,11 @@
 
 int main()
 {
-    char a = '9';
-    printf("%d", (int)a-48);
+    switch('a')
+    {
+         case 'b':printf("b");
+        case 'a':printf("a");
+       
+    }
     return 0;
 }

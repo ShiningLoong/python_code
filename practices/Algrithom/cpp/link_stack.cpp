@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 #define MAX_STACK_SIZE 256
-#define ELE_TYPE char
+#define ELE_TYPE int
 
 typedef struct LNode{
     ELE_TYPE data;
@@ -109,7 +109,6 @@ int EasyArithmetic(int x, int y,char c)
     }
 }
 
-
 int Calculate(char *s) //calculate the value of a expression only contains +-*/
 {
     char post_exp[100] = {'\0'};
@@ -148,30 +147,31 @@ int Calculate(char *s) //calculate the value of a expression only contains +-*/
     printf("%s\n", post_exp);
     
     // ------------------------------calculate post expression--------------------------------------------
-	int k=0;
-	StackNode *L1;
-	InitStack(L1);
-	int position,num;
-	int x,y;
-	while(post_exp[k]!='\0')
-	{
-		for(;IsNum(post_exp[k]);k++)
-			PushStack(L1,post_exp[k]);
-		position = 1,num=0;
-		while(!IsEmptyStack(L1))
-			{num+=PopStack(L1)* position; position=position*10;}
-		// printf("%d\n",post_exp[k]);
-		PushStack(L,num);
+    int k=0,num=0;
+    int x,y;
+    while(post_exp[k]!='\0')
+    {
+        num = 0;
+        if(IsNum(post_exp[k]))
+        {
+            while(IsNum(post_exp[k]))
+            {
+                num=num*10+(post_exp[k]-'0');
+                k++;
+            }
+            PushStack(L,num);   
+        }
         if(post_exp[k]=='#')
-			k++;
-		else
-			{
-				y = PopStack(L);
-				x = PopStack(L);
-				result = EasyArithmetic(x,y,post_exp[k]);
-				PushStack(L,result);
-			}				
-	}
+            k++;
+        else
+        {
+            y = PopStack(L);
+            x = PopStack(L);
+            result=EasyArithmetic(x,y,post_exp[k]);
+            k++;
+            PushStack(L,result);
+        }
+    }
     return result;
 }
 
