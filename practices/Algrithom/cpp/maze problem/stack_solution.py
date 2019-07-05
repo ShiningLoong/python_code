@@ -35,7 +35,7 @@ def generate_maze(n):
     return _maze
 
 
-def mov_x(_x, step):
+def mov_x(_x, step):  # 画图时的移动方式
     for num in range(len(_x)):
         _x[num] += step
     return _x
@@ -84,7 +84,10 @@ out = (maze_size-2, 1+round(random()*(maze_size-3)))
 x = [0, 1, 1, 0]
 y = [0, 0, 1, 1]
 maze = generate_maze(maze_size)
-# print(maze)
+for _item in maze:
+    for _num in _item:
+        print(_num, end=',')
+print('\n')
 for i in range(len(maze)):
     for j in range(len(maze[i])):
         if (i, j) == entrance:
